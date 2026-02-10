@@ -5,6 +5,8 @@ on:
 
 jobs:
   createBetaReleaseCommit:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     if: '!github.event.prerelease'
     steps:
