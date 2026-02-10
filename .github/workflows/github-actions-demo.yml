@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     if: '!github.event.prerelease'
     steps:
+    - uses: actions/checkout@v6
     - name: Configure Git
       run: |
         git config user.name "GitHub Actions"
