@@ -12,4 +12,4 @@ jobs:
       run: echo "This is a Pre-Release. The beta commit is not created"
     - name: Runs on Release
       if: '!github.event.prerelease'
-      run: echo "This is a Release - {{ $github.ref_name }} Creating a release beta commit."
+      run: echo "This is a Release - ${{ github.ref_name }} Creating a release beta commit."
