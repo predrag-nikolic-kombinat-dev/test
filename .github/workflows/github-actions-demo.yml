@@ -4,7 +4,7 @@ on:
     types: [published]
 
 jobs:
-  create beta tag:
+  createRelease:
     runs-on: ubuntu-latest
     steps:
     - name: Runs on Pre-Release
