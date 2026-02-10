@@ -33,4 +33,4 @@ jobs:
         git add .
         git commit --allow-empty -m "Release ${{ github.ref_name }}"
         git tag -a ${{ env.NEXT_TAG }} -m "Release ${{ github.ref_name }}"
-        git push origin main --tag ${{ env.NEXT_TAG }}
+        git push --tag ${{ env.NEXT_TAG }}
