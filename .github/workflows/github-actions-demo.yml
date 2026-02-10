@@ -18,7 +18,7 @@ jobs:
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
-    - name: Calculate Next Version
+    - name: Create Next Patch
       id: bump
       run: |
         current_version="${{ github.ref_name }}"
@@ -27,13 +27,16 @@ jobs:
         ((patch++))
         next_version="${current_version%.*}.$patch"
         echo "NEXT_TAG=$next_version" >> $GITHUB_ENV
-        echo "Next patch: $next_version"
-    - name: Runs on Release
-      run: echo "This is a Release - ${{ github.ref_name }} Creating a release beta commit."
-    - name: Commit and Tag using Git commands
+        echo "Next patch version: $next_version"
+        next_beta="v${next_version}-beta.0"
+        echo "NEXT_BETA_TAG=$next_beta" >> $GITHUB_ENV
+        echo "Next beta version: $next_version"
+    - name: After Release
+      run: echo "Release ${{ github.ref_name }} is published."
+    - name: Commit release and tag using Git commands
       run: |
         git add .
-        git commit --allow-empty -m "Release ${{ github.ref_name }}"
-        git tag -a "v${{ env.NEXT_TAG }}-beta.0" -m "Release ${{ github.ref_name }}"
+        git commit --allow-empty -m "Release commit for ${{ env.NEXT_BETA_TAG }}"
+        git tag -a ${{ env.NEXT_BETA_TAG }}
         git push origin HEAD:${{ github.event.release.target_commitish }}
-        git push origin --tag "v${{ env.NEXT_TAG }}-beta.0"
+        git push origin --tag ${{ env.NEXT_TAG }}
