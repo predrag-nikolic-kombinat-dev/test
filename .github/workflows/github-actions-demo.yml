@@ -18,6 +18,6 @@ jobs:
     - name: Commit and Tag using Git commands
       run: |
         git add .
-        git commit -m "Release ${{ github.ref_name }}"
+        git commit --allow-empty -m "Release ${{ github.ref_name }}"
         git tag -a ${{ github.ref_name }} -m "Release ${{ github.ref_name }}"
         git push origin HEAD --tags
