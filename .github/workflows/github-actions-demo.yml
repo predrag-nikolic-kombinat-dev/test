@@ -32,6 +32,4 @@ jobs:
       run: |
         git commit --allow-empty -m "Release commit for ${{ env.NEXT_BETA_TAG }}"
         git tag "${{ env.NEXT_BETA_TAG }}"
-        # push tag and push branch 
-        git push origin "${{ env.NEXT_BETA_TAG }}"
-        git push origin HEAD:${{ github.event.release.target_commitish }}
+        git push origin HEAD:${{ github.event.release.target_commitish }} --tags
