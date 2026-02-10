@@ -34,4 +34,4 @@ jobs:
         git tag -a "${{ env.NEXT_BETA_TAG }}" -m "Release commit for ${{ env.NEXT_BETA_TAG }}"
         # Push branch first, then tag
         git push origin HEAD:${{ github.event.release.target_commitish }}
-        git push origin "${{ env.NEXT_BETA_TAG }}""
+        git push origin "${{ env.NEXT_BETA_TAG }}"
