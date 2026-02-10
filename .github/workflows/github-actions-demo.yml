@@ -6,7 +6,6 @@ on:
 jobs:
   createBetaReleaseCommit:
     permissions:
-      actions: write
       contents: write
     runs-on: ubuntu-latest
     if: '!github.event.prerelease'
@@ -33,4 +32,4 @@ jobs:
         git add .
         git commit --allow-empty -m "Release ${{ github.ref_name }}"
         git tag -a ${{ env.NEXT_TAG }} -m "Release ${{ github.ref_name }}"
-        git push --tag ${{ env.NEXT_TAG }}
+        git push origin --tag ${{ env.NEXT_TAG }}
