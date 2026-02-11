@@ -47,7 +47,7 @@ jobs:
       run: |
         TARGET_BRANCH="${{ github.event.release.target_commitish }}"
         echo "Target branch: $TARGET_BRANCH"
-        echo "TARGET_BRANCH=$TARGET_BRANCH" >> $GITHUB_ENV
+        echo "target_branch=$TARGET_BRANCH" >> $GITHUB_ENV
         CURRENT_VERSION="${{ github.event.release.tag_name }}"
         echo "Current tag: $CURRENT_VERSION"
         PATCH=$(cut -d'.' -f3 <<< "$CURRENT_VERSION")
@@ -55,10 +55,10 @@ jobs:
         NEXT_VERSION="${CURRENT_VERSION%.*}.$PATCH"
         BETA_TAG="${NEXT_VERSION}-beta.0"
         echo "Beta tag: $BETA_TAG"
-        echo "BETA_TAG=$BETA_TAG" >> $GITHUB_ENV
+        echo "beta_tag=$BETA_TAG" >> $GITHUB_ENV
     - name: "Commit, tag and push to ${{ github.event.release.target_commitish }}"
       run: |
-        git commit --allow-empty -m "Release commit for ${{ env.BETA_TAG }}"
-        git tag "${{ env.BETA_TAG }}"
-        git push origin HEAD:${{ env.TARGET_BRANCH }}
-        git push origin "${{ env.BETA_TAG }}"
+        git commit --allow-empty -m "Release commit for ${{ env.beta_tag }}"
+        git tag "${{ env.beta_tag }}"
+        git push origin HEAD:${{ env.target_branch }}
+        git push origin "${{ env.beta_tag }}"
