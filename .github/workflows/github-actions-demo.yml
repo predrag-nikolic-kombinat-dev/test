@@ -45,19 +45,20 @@ jobs:
         git config user.email "actions@github.com"
     - name: Debug Info
       run: |
-        branch="${{ github.event.release.target_commitish }}"
-        echo "Target branch: $branch"
-        current_version="${{ github.event.release.tag_name }}"
-        echo "Current version: $current_version"
-        patch=$(cut -d'.' -f3 <<< "$current_version")
-        ((patch++))
-        next_version="${current_version%.*}.$patch"
-        next_beta="${next_version}-beta.0"
-        echo "Next beta version: $next_beta"
-        echo "NEXT_BETA_TAG=$next_beta" >> $GITHUB_ENV
+        TARGET_BRANCH="${{ github.event.release.target_commitish }}"
+        echo "Target branch: $TARGET_BRANCH"
+        echo "TARGET_BRANCH=$TARGET_BRANCH" >> $GITHUB_ENV
+        CURRENT_VERSION="${{ github.event.release.tag_name }}"
+        echo "Current tag: $CURRENT_VERSION"
+        PATCH=$(cut -d'.' -f3 <<< "$CURRENT_VERSION")
+        ((PATCH++))
+        NEXT_VERSION="${CURRENT_VERSION%.*}.$PATCH"
+        BETA_TAG="${NEXT_VERSION}-beta.0"
+        echo "Beta tag: $BETA_TAG"
+        echo "BETA_TAG=$BETA_TAG" >> $GITHUB_ENV
     - name: "Commit, tag and push to ${{ github.event.release.target_commitish }}"
       run: |
-        git commit --allow-empty -m "Release commit for ${{ env.NEXT_BETA_TAG }}"
-        git tag "${{ env.NEXT_BETA_TAG }}"
-        git push origin HEAD:${{ github.event.release.target_commitish }}
-        git push origin "${{ env.NEXT_BETA_TAG }}"
+        git commit --allow-empty -m "Release commit for ${{ env.BETA_TAG }}"
+        git tag "${{ env.BETA_TAG }}"
+        git push origin HEAD:${{ env.TARGET_BRANCH }}
+        git push origin "${{ env.BETA_TAG }}"
