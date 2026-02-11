@@ -7,12 +7,12 @@ jobs:
   check-build-trigger:
     runs-on: ubuntu-latest
     outputs:
-      is_valid: ${{ steps.validate.outputs.is_valid }}
+      should_commit: ${{ steps.validate.outputs.should_commit }}
     steps:
       - id: validate
-        name: Validate inputs
+        name: Decide if we should create the release commit
         run: |
-          VALID=false
+          SHOULD_COMMIT=false
           TAG="${{ github.event.release.tag_name }}"
           IS_PRERELEASE=${{ github.event.release.prerelease }}
           TARGET_BRANCH="${{ github.event.release.target_commitish }}"
@@ -23,17 +23,17 @@ jobs:
           elif [[ ! $TARGET_BRANCH == releases/* ]]; then
             echo "Skip Reason: Target branch was set to '$TARGET_BRANCH', instead of 'releases/*'"
           else
-            echo "All checks passed. Proceeding with beta tag creation."
-            VALID=true
+            echo "All checks passed."
+            SHOULD_COMMIT=true
           fi
-          echo "is_valid=$VALID" >> $GITHUB_OUTPUT
+          echo "should_commit=$SHOULD_COMMIT" >> $GITHUB_OUTPUT
 
   create-release-commit:
     needs: check-build-trigger
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    if: needs.check-build-trigger.outputs.is_valid == 'true'
+    if: needs.check-build-trigger.outputs.should_commit == 'true'
     steps:
     - name: Checkout branch
       uses: actions/checkout@v6
