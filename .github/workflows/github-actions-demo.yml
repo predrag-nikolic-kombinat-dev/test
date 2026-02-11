@@ -62,7 +62,7 @@ jobs:
         NEXT_VERSION="${CURRENT_VERSION%.*}.$PATCH"
         BETA_TAG="${NEXT_VERSION}-beta.0"
         echo "Beta tag: $BETA_TAG"
-        echo "BETA_TAG=$BETA_TAG" >> r
+        echo "BETA_TAG=$BETA_TAG" >> $GITHUB_ENV
     - name: "Commit, tag and push to ${{ github.event.release.target_commitish }}"
       run: |
         git commit --allow-empty -m "Release commit for ${{ github.env.BETA_TAG }}"
