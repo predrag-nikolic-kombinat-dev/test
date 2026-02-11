@@ -20,6 +20,8 @@ jobs:
         git config user.email "actions@github.com"
     - name: Create Next Patch
       run: |
+        branch="${{ github.event.release.target_commitish }}"
+        echo "Current version: $branch"
         current_version="${{ github.event.release.tag_name }}"
         echo "Current version: $current_version"
         patch=$(cut -d'.' -f3 <<< "$current_version")
@@ -30,6 +32,7 @@ jobs:
         echo "NEXT_BETA_TAG=$next_beta" >> $GITHUB_ENV
     - name: Commit release and tag using Git commands
       run: |
+        git rev-parse --abbrev-ref HEAD
         git commit --allow-empty -m "Release commit for ${{ env.NEXT_BETA_TAG }}"
         git tag "${{ env.NEXT_BETA_TAG }}"
         git push origin HEAD:${{ github.event.release.target_commitish }}
