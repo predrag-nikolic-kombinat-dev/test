@@ -29,9 +29,9 @@ jobs:
           fi
 
           if [ "$SHOULD_COMMIT" = "false" ]; then
-            echo "⏭️ Step Skipped" >> $GITHUB_STEP_SUMMARY
+            echo "⏭️ We will skip creating a release commit" >> $GITHUB_STEP_SUMMARY
             echo "$REASON" >> $GITHUB_STEP_SUMMARY
-            echo "Skip Reason: $REASON"
+            echo "Because: $REASON"
           fi
           echo "should_commit=$SHOULD_COMMIT" >> $GITHUB_OUTPUT
 
