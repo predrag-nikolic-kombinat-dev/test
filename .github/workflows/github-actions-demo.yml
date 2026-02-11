@@ -1,14 +1,16 @@
-name: Create a beta release after the release
+name: Create a beta commit and tag after release
 on:
   release:
     types: [published]
 
 jobs:
-  createBetaReleaseCommit:
+  afterGithubRelease:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    if: '!github.event.prerelease'
+    if: |
+      github.event.release.prerelease == false && 
+      startsWith(github.event.release.target_commitish, 'releases/')
     steps:
     - name: Checkout branch
       uses: actions/checkout@v6
@@ -18,10 +20,10 @@ jobs:
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
-    - name: Create Next Patch
+    - name: Debug Info
       run: |
         branch="${{ github.event.release.target_commitish }}"
-        echo "Current version: $branch"
+        echo "Target branch: $branch"
         current_version="${{ github.event.release.tag_name }}"
         echo "Current version: $current_version"
         patch=$(cut -d'.' -f3 <<< "$current_version")
@@ -30,9 +32,8 @@ jobs:
         next_beta="v${next_version}-beta.0"
         echo "Next beta version: $next_version"
         echo "NEXT_BETA_TAG=$next_beta" >> $GITHUB_ENV
-    - name: Commit release and tag using Git commands
+    - name: "Commit, tag and push to ${{ github.event.release.target_commitish }}"
       run: |
-        git rev-parse --abbrev-ref HEAD
         git commit --allow-empty -m "Release commit for ${{ env.NEXT_BETA_TAG }}"
         git tag "${{ env.NEXT_BETA_TAG }}"
         git push origin HEAD:${{ github.event.release.target_commitish }}
