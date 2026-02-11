@@ -10,6 +10,7 @@ jobs:
       is_valid: ${{ steps.validate.outputs.is_valid }}
     steps:
       - id: validate
+        name: Validate inputs
         run: |
           VALID=false
           TAG="${{ github.event.release.tag_name }}"
