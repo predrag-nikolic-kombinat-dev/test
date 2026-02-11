@@ -21,7 +21,7 @@ jobs:
     - name: Create Next Patch
       run: |
         branch="${{ github.event.release.target_commitish }}"
-        echo "Current version: $branch"
+        echo "Current branch: $branch"
         current_version="${{ github.event.release.tag_name }}"
         echo "Current version: $current_version"
         patch=$(cut -d'.' -f3 <<< "$current_version")
