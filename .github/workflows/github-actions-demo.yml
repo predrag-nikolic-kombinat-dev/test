@@ -23,14 +23,14 @@ jobs:
     - name: Debug Info
       run: |
         branch="${{ github.event.release.target_commitish }}"
-        echo "Current branch: $branch"
+        echo "Target branch: $branch"
         current_version="${{ github.event.release.tag_name }}"
         echo "Current version: $current_version"
         patch=$(cut -d'.' -f3 <<< "$current_version")
         ((patch++))
         next_version="${current_version%.*}.$patch"
         next_beta="v${next_version}-beta.0"
-        echo "Next beta version: $next_version"
+        echo "Next beta version: $next_beta"
         echo "NEXT_BETA_TAG=$next_beta" >> $GITHUB_ENV
     - name: "Commit, tag and push to ${{ github.event.release.target_commitish }}"
       run: |
