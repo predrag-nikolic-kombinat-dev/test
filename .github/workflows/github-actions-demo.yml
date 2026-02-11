@@ -17,11 +17,11 @@ jobs:
           IS_PRERELEASE=${{ github.event.release.prerelease }}
           TARGET_BRANCH="${{ github.event.release.target_commitish }}"
           if [[ ! $TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "Skip Reason: Tag '$TAG' is not formatted as 'vMAJOR.MINOR.PATCH'"
+            echo "::notice title={Skip Reason}:: Tag '$TAG' is not formatted as 'vMAJOR.MINOR.PATCH'"
           elif [[ "$IS_PRERELEASE" == "true" ]]; then
-            echo "Skip Reason: A GitHub prerelease was created instead of a GitHub release"
+            echo "::notice title={Skip Reason}:: A GitHub prerelease was created instead of a GitHub release"
           elif [[ ! $TARGET_BRANCH == releases/* ]]; then
-            echo "Skip Reason: Target branch was set to '$TARGET_BRANCH', instead of 'releases/*'"
+            echo "::notice title={Skip Reason}:: Target branch was set to '$TARGET_BRANCH', instead of 'releases/*'"
           else
             echo "All checks passed."
             SHOULD_COMMIT=true
