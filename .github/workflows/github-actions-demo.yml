@@ -4,13 +4,35 @@ on:
     types: [published]
 
 jobs:
+  check-build-trigger:
+    runs-on: ubuntu-latest
+    outputs:
+      is_valid: ${{ steps.validate.outputs.is_valid }}
+    steps:
+      - id: validate
+        run: |
+          VALID=false
+          TAG="${{ github.event.release.tag_name }}"
+          IS_PRERELEASE=${{ github.event.release.prerelease }}
+          TARGET_BRANCH="${{ github.event.release.target_commitish }}"
+          if [[ ! $TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Skip Reason: Tag '$TAG' is not formatted as 'vMAJOR.MINOR.PATCH'"
+          elif [[ "$IS_PRERELEASE" == "true" ]]; then
+            echo "Skip Reason: A GitHub prerelease was created instead of a GitHub release"
+          elif [[ ! $TARGET_BRANCH == releases/* ]]; then
+            echo "Skip Reason: Target branch was set to '$TARGET_BRANCH', instead of 'releases/*'"
+          else
+            echo "All checks passed. Proceeding with beta tag creation."
+            VALID=true
+          fi
+          echo "is_valid=$VALID" >> $GITHUB_OUTPUT
+
   create-release-commit:
+    needs: check-build-trigger
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    if: |
-      github.event.release.prerelease == false && 
-      startsWith(github.event.release.target_commitish, 'releases/')
+    if: needs.check-build-trigger.outputs.is_valid == 'true'
     steps:
     - name: Checkout branch
       uses: actions/checkout@v6
