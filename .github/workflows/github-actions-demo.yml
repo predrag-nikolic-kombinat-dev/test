@@ -29,7 +29,7 @@ jobs:
         patch=$(cut -d'.' -f3 <<< "$current_version")
         ((patch++))
         next_version="${current_version%.*}.$patch"
-        next_beta="v${next_version}-beta.0"
+        next_beta="${next_version}-beta.0"
         echo "Next beta version: $next_beta"
         echo "NEXT_BETA_TAG=$next_beta" >> $GITHUB_ENV
     - name: "Commit, tag and push to ${{ github.event.release.target_commitish }}"
