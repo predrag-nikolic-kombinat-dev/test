@@ -1,3 +1,3 @@
 # test
 
-Some paragraf
+Some paragraph
