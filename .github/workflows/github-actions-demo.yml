@@ -65,7 +65,7 @@ jobs:
         echo "BETA_TAG=$BETA_TAG" >> $GITHUB_ENV
     - name: "Commit, tag and push to ${{ github.event.release.target_commitish }}"
       run: |
-        git commit --allow-empty -m "Release commit for ${{ github.env.BETA_TAG }}"
-        git tag "${{ github.env.BETA_TAG }}"
-        git push origin HEAD:${{ github.env.TARGET_BRANCH }}
-        git push origin "${{ github.env.BETA_TAG }}"
+        git commit --allow-empty -m "Release commit for ${{ env.BETA_TAG }}"
+        git tag "${{ env.BETA_TAG }}"
+        git push origin HEAD:${{ env.TARGET_BRANCH }}
+        git push origin "${{ env.BETA_TAG }}"
