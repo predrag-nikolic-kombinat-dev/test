@@ -31,7 +31,7 @@ jobs:
           if [ "$SHOULD_COMMIT" = "false" ]; then
             echo "⏭️ Step Skipped" >> $GITHUB_STEP_SUMMARY
             echo "$REASON" >> $GITHUB_STEP_SUMMARY
-            echo "Skip Reason: $REASON" # Keep in logs too
+            echo "Skip Reason: $REASON"
           fi
           echo "should_commit=$SHOULD_COMMIT" >> $GITHUB_OUTPUT
 
