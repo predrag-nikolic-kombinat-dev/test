@@ -59,6 +59,6 @@ jobs:
     - name: "Commit, tag and push to ${{ github.event.release.target_commitish }}"
       run: |
         git commit --allow-empty -m "Release commit for ${{ env.beta_tag }}"
-        git tag "${{ env.beta_tag }}"
-        git push origin HEAD:${{ env.target_branch }}
-        git push origin "${{ env.beta_tag }}"
+        git tag "${{ github.env.beta_tag }}"
+        git push origin HEAD:${{ github.env.target_branch }}
+        git push origin "${{ github.env.beta_tag }}"
