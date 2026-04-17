@@ -59,7 +59,7 @@ jobs:
         CURRENT_VERSION="${{ github.event.release.tag_name }}"
         echo "Current tag: $CURRENT_VERSION"
         PATCH=$(cut -d'.' -f3 <<< "$CURRENT_VERSION")
-        ((PATCH++))
+        PATCH=$((PATCH + 1))
         NEXT_VERSION="${CURRENT_VERSION%.*}.$PATCH"
         BETA_TAG="${NEXT_VERSION}-beta.0"
         echo "Beta tag: $BETA_TAG"
